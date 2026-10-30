@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Helpmate – Multi-tenant AI Customer Support</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--peri:#E3D9FC;--mag:#BF40FA;--blue:#4928C2;--velvet:#5B2A62;--black:#040607;--glass:rgba(227,217,252,.06);--line:rgba(227,217,252,.14);--serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--peri);font-family:var(--sans);line-height:1.6;overflow-x:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.bg{position:fixed;inset:0;z-index:-1;background:var(--black);overflow:hidden}
+.bg i{position:absolute;border-radius:50%;filter:blur(110px);opacity:.75;animation:float 18s ease-in-out infinite}
+.bg i:nth-child(1){width:60vw;height:60vw;background:var(--blue);top:-20vw;left:-15vw}
+.bg i:nth-child(2){width:45vw;height:45vw;background:var(--mag);bottom:-15vw;left:-10vw;opacity:.55;animation-delay:-6s}
+.bg i:nth-child(3){width:50vw;height:50vw;background:var(--velvet);top:20vh;right:-18vw;animation-delay:-11s}
+.bg i:nth-child(4){width:30vw;height:30vw;background:var(--blue);bottom:-8vw;right:10vw;opacity:.5;animation-delay:-3s}
+@keyframes float{50%{transform:translate(6vw,-5vh) scale(1.12)}}
+nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;display:flex;justify-content:center;padding:16px}
+.pill{display:flex;align-items:center;gap:12px;padding:8px 22px 8px 10px;border-radius:99px;background:rgba(4,6,7,.55);backdrop-filter:blur(16px);border:1px solid var(--line)}
+.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--mag));display:grid;place-items:center}
+.brand{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.3px}
+section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:110px 6vw 70px;text-align:center}
+h1,h2{font-family:var(--serif);font-weight:600;line-height:1.08}
+h1{font-size:clamp(40px,7vw,84px);max-width:980px}
+h2{font-size:clamp(30px,4.6vw,56px);max-width:860px}
+.grad{background:linear-gradient(90deg,var(--mag),#8f6bff,var(--peri));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{max-width:660px;margin:22px auto 0;color:rgba(227,217,252,.78);font-size:clamp(16px,1.6vw,19px)}
+.eyebrow{display:inline-block;padding:6px 16px;border:1px solid var(--line);border-radius:99px;background:var(--glass);font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:26px;color:var(--peri)}
+.btns{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;justify-content:center}
+.btn{padding:14px 28px;border-radius:99px;font-weight:600;font-size:15px;border:1px solid var(--line);color:var(--peri);background:var(--glass);cursor:pointer;transition:.3s}
+.btn.p{background:linear-gradient(90deg,var(--blue),var(--mag));border:0;color:#fff;box-shadow:0 10px 40px -8px var(--mag)}
+.btn:hover{transform:translateY(-3px)}
+.grid{display:grid;gap:20px;width:100%;max-width:1120px;margin-top:54px;text-align:left}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{padding:28px;border-radius:26px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);transition:.4s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-8px);border-color:var(--mag);box-shadow:0 20px 60px -20px var(--mag)}
+.tag{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mag);font-weight:600}
+.card h3{font-family:var(--serif);font-size:24px;margin:10px 0 8px;font-weight:600}
+.card p{font-size:15px;color:rgba(227,217,252,.75)}
+.ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--velvet));font-size:22px;margin-bottom:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+.chip{font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border:1px solid var(--line);border-radius:99px}
+.chat{width:100%;max-width:470px;margin:50px auto 0;padding:22px;border-radius:28px;background:rgba(4,6,7,.55);border:1px solid var(--line);backdrop-filter:blur(18px);text-align:left;box-shadow:0 30px 90px -30px var(--blue)}
+.msg{padding:11px 16px;border-radius:18px;margin:10px 0;font-size:14.5px;max-width:86%;opacity:0;transform:translateY(12px);animation:pop .6s forwards}
+.msg.u{background:var(--glass);border:1px solid var(--line)}
+.msg.b{background:linear-gradient(135deg,var(--blue),var(--velvet));margin-left:auto}
+.msg.h{background:rgba(191,64,250,.2);border:1px solid var(--mag);margin-left:auto}
+.msg:nth-child(2){animation-delay:.8s}.msg:nth-child(3){animation-delay:2s}.msg:nth-child(4){animation-delay:3.4s}.msg:nth-child(5){animation-delay:4.8s}
+@keyframes pop{to{opacity:1;transform:none}}
+.flow{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:54px;max-width:1100px;counter-reset:s}
+.step{flex:1 1 170px;max-width:210px;padding:22px 16px;border-radius:22px;background:var(--glass);border:1px solid var(--line);position:relative;counter-increment:s;transition:.4s}
+.step:before{content:counter(s);display:grid;place-items:center;width:34px;height:34px;margin:0 auto 12px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--mag));font-weight:600}
+.step:hover{transform:translateY(-6px);border-color:var(--mag)}
+.step b{display:block;font-family:var(--serif);font-size:18px;margin-bottom:4px}.step span{font-size:13.5px;color:rgba(227,217,252,.72)}
+.wave{display:flex;gap:4px;align-items:center;height:40px;margin-top:16px}
+.wave u{width:5px;border-radius:4px;background:linear-gradient(var(--mag),var(--blue));animation:w 1.1s ease-in-out infinite}
+@keyframes w{50%{height:34px}0%,100%{height:8px}}
+.stats{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:50px}
+.stat{padding:26px 34px;border-radius:24px;background:var(--glass);border:1px solid var(--line);min-width:200px}
+.stat b{display:block;font-family:var(--serif);font-size:44px}
+.tenants{display:flex;gap:16px;margin-top:50px;flex-wrap:wrap;justify-content:center}
+.tn{padding:20px 24px;border-radius:22px;border:1px dashed var(--mag);background:var(--glass);min-width:180px;animation:glow 4s ease-in-out infinite}
+.tn:nth-child(2){animation-delay:-1.3s}.tn:nth-child(3){animation-delay:-2.6s}
+@keyframes glow{50%{box-shadow:0 0 50px -8px var(--mag)}}
+.cta{padding:70px 6vw;border-radius:40px;background:linear-gradient(135deg,rgba(73,40,194,.6),rgba(91,42,98,.6));border:1px solid var(--line);max-width:1000px;width:100%}
+footer{text-align:center;padding:40px;font-size:13px;color:rgba(227,217,252,.55);border-top:1px solid var(--line)}
+.rv{opacity:0;transform:translateY(40px);transition:1s cubic-bezier(.2,.7,.2,1)}.rv.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.msg{opacity:1;transform:none}}
+</style></head><body>
+<div class="bg"><i></i><i></i><i></i><i></i></div>
+<nav><div class="pill"><div class="logo"><svg width="30" height="30" viewBox="0 0 100 100"><g fill="#E3D9FC" font-family="Georgia,serif" font-weight="700"><text x="12" y="74" font-size="70">H</text><text x="40" y="74" font-size="50" opacity=".9">M</text></g><path d="M36 54l9 9 20-22" fill="none" stroke="#040607" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="brand">Helpmate</span></div></nav>
+
+<section id="top">
+<div class="eyebrow rv">Multi-tenant AI customer support</div>
+<h1 class="rv">Support that <span class="grad">answers, acts</span> and hands off with care.</h1>
+<p class="sub rv">Helpmate gives every company its own AI agent on voice and WhatsApp. Upload your policies, and customers get accurate answers in seconds, with humans ready when it matters.</p>
+<div class="btns rv"><a class="btn p">Get a demo</a><a class="btn" href="#rag">See how it works</a></div>
+<div class="chat rv"><div class="tag">Live conversation</div>
+<div class="msg u">Hi, where is my refund?</div>
+<div class="msg b">Your refund was approved on Monday and takes 3–5 working days, per our returns policy.</div>
+<div class="msg u">That’s too long. I want to talk to someone.</div>
+<div class="msg h">Connecting you to Sara from support. She can see our full chat.</div></div>
+</section>
+
+<section id="channels"><div class="eyebrow rv">Channels</div>
+<h2 class="rv">Meet customers where they <span class="grad">already are</span></h2>
+<div class="grid g2">
+<div class="card rv"><div class="ico">🎙️</div><div class="tag">Voice</div><h3>Natural phone calls</h3><p>Speech in, speech out. Helpmate listens, searches your knowledge, and replies in a natural voice.</p><div class="wave"><u></u><u style="animation-delay:.1s"></u><u style="animation-delay:.2s"></u><u style="animation-delay:.3s"></u><u style="animation-delay:.4s"></u><u style="animation-delay:.5s"></u><u style="animation-delay:.6s"></u><u style="animation-delay:.7s"></u><u style="animation-delay:.8s"></u><u style="animation-delay:.9s"></u></div><div class="chips"><span class="chip">Speech to text</span><span class="chip">Text to speech</span><span class="chip">Under 4s round trip</span></div></div>
+<div class="card rv"><div class="ico">💬</div><div class="tag">WhatsApp</div><h3>Instant chat support</h3><p>A dedicated WhatsApp Business number for each tenant, so every brand speaks with its own identity.</p><div class="chips"><span class="chip">Business API</span><span class="chip">Per-tenant number</span><span class="chip">English</span></div></div>
+</div></section>
+
+<section id="tenant"><div class="eyebrow rv">Multi-tenant</div>
+<h2 class="rv">One platform. <span class="grad">Many companies.</span> Zero overlap.</h2>
+<p class="sub rv">Each tenant gets isolated documents, agents, contacts and conversations on one shared engine.</p>
+<div class="tenants rv"><div class="tn"><div class="tag">Tenant A</div><b>Own docs · Own agent</b></div><div class="tn"><div class="tag">Tenant B</div><b>Own docs · Own agent</b></div><div class="tn"><div class="tag">Tenant C</div><b>Own docs · Own agent</b></div></div>
+<div class="grid g3"><div class="card rv"><div class="ico">🛡️</div><h3>Super Admin</h3><p>Manage all tenants, approve new requests and assign agents platform-wide.</p></div><div class="card rv"><div class="ico">🧩</div><h3>Admin</h3><p>Configure the AI agent, switch it active or inactive, and manage company documents.</p></div><div class="card rv"><div class="ico">🎧</div><h3>Employee</h3><p>Handle tickets and review calls from a focused workspace.</p></div></div></section>
+
+<section id="rag"><div class="eyebrow rv">RAG-powered</div>
+<h2 class="rv">Your documents in. <span class="grad">Accurate answers</span> out.</h2>
+<p class="sub rv">No long setup. Upload your policies and FAQs, and Helpmate answers strictly from them.</p>
+<div class="flow rv"><div class="step"><b>Upload</b><span>Policies, FAQs and guides</span></div><div class="step"><b>Chunk</b><span>Documents split into passages</span></div><div class="step"><b>Embed</b><span>Passages become vectors</span></div><div class="step"><b>Retrieve</b><span>Closest passages found</span></div><div class="step"><b>Answer</b><span>The LLM replies and acts</span></div></div></section>
+
+<section id="tickets"><div class="eyebrow rv">Tickets &amp; handoff</div>
+<h2 class="rv">When AI reaches its limit, <span class="grad">humans step in</span></h2>
+<div class="grid g3">
+<div class="card rv"><div class="ico">🎫</div><div class="tag">Step 1</div><h3>Ticket created</h3><p>Unresolved or sensitive issues become tickets automatically with the full transcript.</p></div>
+<div class="card rv"><div class="ico">🤝</div><div class="tag">Step 2</div><h3>Human handoff</h3><p>The conversation moves to an employee with context intact. Customers never repeat themselves.</p></div>
+<div class="card rv"><div class="ico">✅</div><div class="tag">Step 3</div><h3>Resolved &amp; learned</h3><p>Outcomes feed analytics so teams spot gaps in their knowledge base.</p></div></div></section>
+
+<section id="features"><div class="eyebrow rv">Platform</div>
+<h2 class="rv">Everything your team needs, <span class="grad">in one workspace</span></h2>
+<div class="grid g4">
+<div class="card rv"><div class="ico">📊</div><h3>Dashboard</h3><p>Live view of conversations and agent activity.</p></div>
+<div class="card rv"><div class="ico">🤖</div><h3>Agents</h3><p>Configure behaviour, rules and status per agent.</p></div>
+<div class="card rv"><div class="ico">👥</div><h3>Contacts</h3><p>Built-in CRM with every customer’s history.</p></div>
+<div class="card rv"><div class="ico">📈</div><h3>Analytics</h3><p>Resolution trends and call insights.</p></div>
+<div class="card rv"><div class="ico">📄</div><h3>Company Docs</h3><p>Manage the knowledge your agent learns from.</p></div>
+<div class="card rv"><div class="ico">📞</div><h3>Conversations</h3><p>Review every call and chat in one place.</p></div>
+<div class="card rv"><div class="ico">🔐</div><h3>Role access</h3><p>Admin and Employee roles with separate views.</p></div>
+<div class="card rv"><div class="ico">🧾</div><h3>Billing</h3><p>Usage and subscription management per tenant.</p></div></div>
+<div class="stats rv"><div class="stat"><b class="grad">2</b>channels: voice and WhatsApp</div><div class="stat"><b class="grad">&lt;4s</b>voice response target</div><div class="stat"><b class="grad">100%</b>tenant data isolation</div></div></section>
+
+<section><div class="cta rv"><h2 style="margin:auto">Ready to give every customer a <span class="grad">Helpmate</span>?</h2><p class="sub">Book a walkthrough and see your documents turn into a working support agent.</p><div class="btns"><a class="btn p">Get a demo</a><a class="btn">Talk to us</a></div></div></section>
+<footer>© 2026 Helpmate · Final year project, PUCIT</footer>
+<script>
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target)}}),{threshold:.15});
+document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=(i%4)*90+'ms';io.observe(el)});
+</script></body></html>
